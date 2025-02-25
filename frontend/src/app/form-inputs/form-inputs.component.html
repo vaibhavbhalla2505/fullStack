@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+ <div class="w-full p-4 md:w-full flex flex-col justify-center items-center border bg-white shadow-md rounded-lg mx-auto sm:max-w-4xl">
+    <h1 class="text-3xl mb-2 font-bold text-center text-gray-800">Book Management System</h1>
+    <form (ngSubmit)="onSubmit()" id="form" class="w-screen p-6 shadow-lg mx-auto sm:m-0 sm:max-w-4xl">
+        <div class="space-y-4">
+            <div class="input">
+                <label for="title" class="text-lg font-medium">Book Title</label>
+                <input [(ngModel)]="book.title" name="title" type="text" id="title" placeholder="Enter Book Title" 
+                       class="w-full p-2 border border-gray-300 rounded-md"/>
+            </div>
+ 
+            <div class="input"> 
+                <label for="author" class="text-lg font-medium">Author Name</label>
+                <input [(ngModel)]="book.author" name="author" type="text" id="author" placeholder="Enter Author Name" 
+                       class="w-full p-2 border border-gray-300 rounded-md"/>
+            </div>
+ 
+            <div class="input">
+                <label for="isbn" class="text-lg font-medium">ISBN No.</label>
+                <input [(ngModel)]="book.isbn" name="isbn" type="text" id="isbn" placeholder="Enter ISBN No." 
+                       class="w-full p-2 border border-gray-300 rounded-md"/>
+            </div>
+ 
+            <div class="input">
+                <label for="date" class="text-lg font-medium">Publication Date</label>
+                <input [(ngModel)]="book.publication_date" name="publication_date"  type="date" id="date" class="w-full p-2 border border-gray-300 rounded-md"/>
+            </div>
+            <div class="input">
+                <label for="price" class="text-lg font-medium">Price</label>
+                <input [(ngModel)]="book.price" name="date" type="number" id="price" placeholder="Enter price" class="w-full p-2 border border-gray-300 rounded-md"/>
+            </div>
+ 
+            <div class="input">
+                <label for="genre" class="text-lg font-medium">Book Genre</label>
+                <select name="genre" [(ngModel)]="book.genre" name="genre" id="genre" 
+                        class="w-full p-2 border border-gray-300 rounded-md">
+                    <option value="" disabled selected>Select Genre</option>
+                    <option *ngFor="let genre of standardGenre" [value]="genre">{{ genre }}</option>
+                </select>
+            </div>
+ 
+            <button type="submit" id="addBook" class="w-full bg-indigo-500 text-white rounded-md py-2 px-4 hover:bg-indigo-900 font-medium">Add Book</button>
+        </div>
+    </form>
+ </div>
