@@ -2,7 +2,7 @@ import { Component} from '@angular/core';
 import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
 import { BookfetchService } from '../service/bookfetch.service';
 import { Book } from '../app.component';
-import { Observable } from 'rxjs';
+import { Observable,map} from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -68,11 +68,45 @@ export class BookTableComponent{
   }
 
   searchAndFilterBooks(): void {
+    this.books$ = this.bookService.getBooks().pipe(
+      map((books: Book[]) => {
+        let filteredBooks = books;
+  
+        if (this.searchValue.trim() !== '') {
+          filteredBooks = filteredBooks.filter(book =>
+            book.title.toLowerCase().includes(this.searchValue.toLowerCase())
+          );
+        }
+  
+        if (this.selectedGenre.trim() !== '') {
+          filteredBooks = filteredBooks.filter(book => book.genre === this.selectedGenre);
+        }
+  
+        if (filteredBooks.length === 0) {
+          alert('No books found with the given criteria!');
+        }
+  
+        return filteredBooks;
+      })
+    );
   }
+  
+  sortByTitle(): void {
+    this.books$ = this.books$.pipe(
+      map((books) => {
+        if (this.sortSelect === 'asc') {
+          return [...books].sort((a, b) => a.title.localeCompare(b.title));
+        } else if (this.sortSelect === 'desc') {
+          return [...books].sort((a, b) => b.title.localeCompare(a.title));
+        }
+        return books;
+      })
+    );
+  }  
 
   clearBook(): void {
-  }
-
-  sortByTitle(): void {
+    this.books$=this.bookService.getBooks();
+    this.searchValue = '';
+    this.sortSelect='';
   }
 }
