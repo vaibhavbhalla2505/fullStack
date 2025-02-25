@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
 import { BookfetchService } from '../service/bookfetch.service';
-import { Router } from '@angular/router';
 import { Book } from '../app.component';
-import { firstValueFrom,Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-table',
@@ -18,7 +18,7 @@ export class BookTableComponent{
     "fiction", "non-fiction", "biography", "history", "politics", "science", "novel"
   ];
 
-  constructor(private sanitizer: DomSanitizer,private bookService: BookfetchService) {
+  constructor(private sanitizer: DomSanitizer,private bookService: BookfetchService,private router: Router) {
     this.books$ = this.bookService.getBooks();
   }
 
@@ -51,10 +51,20 @@ export class BookTableComponent{
     return this.sanitizer.bypassSecurityTrustHtml(html); 
   }
 
-  editBook(book: Book): void {
+  editBook(book: Book,i:number): void {
+    this.bookService.setEditBook(book,i);
+    this.router.navigate(['/add-book']);
   }
 
-  deleteBook(): void {
+  deleteBook(book:Book): void {
+    this.bookService.deleteBook(book).subscribe({
+      next: () => {
+        alert('Book deleted successfully');
+        this.books$=this.bookService.getBooks();
+      },
+      error: (err) => console.error("Error:", err),
+    });
+    
   }
 
   searchAndFilterBooks(): void {

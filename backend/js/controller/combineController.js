@@ -85,6 +85,7 @@ export const createBook = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 export const updateBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("HI from update");
     try {
         const { title, publication_date, price, author, genre, isbn } = req.body;
         const ISBN = req.params.id;
@@ -128,6 +129,36 @@ export const updateBook = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
         res.status(200).send({
             message: "Book updated successfully"
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            success: false,
+            error,
+        });
+    }
+});
+export const deleteBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const ISBN = req.params.id;
+        if (!ISBN) {
+            res.status(400).send({
+                success: false,
+                message: "id is required.",
+            });
+            return;
+        }
+        const book = yield Book.findOne({ where: { isbn: ISBN } });
+        if (!book) {
+            res.status(404).send({
+                success: false,
+                message: "Book not found.",
+            });
+            return;
+        }
+        yield Book.destroy({ where: { isbn: ISBN } });
+        res.status(200).send({
+            message: "Book deleted successfully"
         });
     }
     catch (error) {

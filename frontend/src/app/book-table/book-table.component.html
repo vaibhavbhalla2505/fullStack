@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody class="border-separate">
-                <tr *ngFor="let book of books$ | async" class="border border-black" >
+                <tr *ngFor="let book of books$ | async;let i=index" class="border border-black" >
                     <td class="border border-black">{{ book.title }}</td>
                     <td class="border border-black">{{ book.author }}</td>
                     <td class="border border-black">{{ book.isbn }}</td>
@@ -41,9 +41,9 @@
                     <td class="border border-black font-medium" [innerHTML]="discountCalculation(book.price)"></td>
                     <td class="border border-black">{{ book.genre }}</td>
                     <td class="border border-black">
-                        <button (click)="editBook(book)"
+                        <button (click)="editBook(book,i)"
                           class="border p-1 text-white bg-green-700 hover:bg-green-300 hover:text-black">Edit</button>
-                        <button (click)="deleteBook()"
+                        <button (click)="deleteBook(book)"
                           class="border p-1 text-white bg-red-700 hover:bg-red-300 hover:text-black">Delete</button>
                       </td>
                 </tr>

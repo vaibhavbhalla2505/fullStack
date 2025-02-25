@@ -13,10 +13,10 @@ const PORT = 3000;
 // Middleware to parse JSON
 app.use(express.json());
 app.use(cors());
+app.use('/api/v1', bmsRoute);
 app.use('/api/v1/author/', authorRoute);
 app.use('/api/v1/category/', categoryRoute);
 app.use('/api/v1/book/', bookRoute);
-app.use('/api/v1/', bmsRoute);
 sequelize.sync({ alter: true });
 app.get('/', (req, res) => {
     res.send('hello');

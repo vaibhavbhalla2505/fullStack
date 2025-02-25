@@ -3,6 +3,7 @@ import { Book } from "../model/bookModel.js";
 import { Author } from "../model/authorModel.js";
 import { Category } from "../model/categoryModel.js";
 import sequelize from "sequelize";
+import { where } from "../../node_modules/sequelize/types/sequelize.js";
 
 export const combineBook:RequestHandler=async(req,res)=>{
     try {
@@ -81,6 +82,7 @@ export const createBook:RequestHandler=async(req,res)=>{
 }
 
 export const updateBook:RequestHandler=async(req,res)=>{
+  console.log("HI from update");
   try {
     const {title,publication_date,price,author,genre,isbn}=req.body;
     const ISBN=req.params.id;
@@ -132,6 +134,35 @@ export const updateBook:RequestHandler=async(req,res)=>{
     })
     res.status(200).send({
       message:"Book updated successfully"
+    })
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      error,
+    })
+  }
+}
+export const deleteBook:RequestHandler=async(req,res)=>{
+  try {
+    const ISBN=req.params.id;
+    if(!ISBN){
+      res.status(400).send({
+        success: false,
+        message: "id is required.",
+      });
+      return;
+    }
+    const book=await Book.findOne({where:{isbn:ISBN}});
+    if(!book){
+      res.status(404).send({
+        success: false,
+        message: "Book not found.",
+      });
+      return;
+    }
+    await Book.destroy({where:{isbn:ISBN}});
+    res.status(200).send({
+      message:"Book deleted successfully"
     })
   } catch (error) {
     res.status(500).send({

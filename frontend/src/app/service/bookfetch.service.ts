@@ -38,4 +38,36 @@ export class BookfetchService {
       })
     );
   }
+  setEditBook(book:Book,i:number):void{
+    this.BookToEdit=book;
+    this.bookIndex=i;
+  }
+  getEditBook():Book | null{
+    return this.BookToEdit;
+  }
+  updateBook(book:Book):Observable<Book>{
+    return this.http.put<Book>(`${this.url}/update-book/${book.isbn}`,book).pipe(
+      tap((response)=>console.log("Book updated",response)),
+      catchError((error)=>{
+        console.log("error occured",error);
+        return throwError(()=>error);
+      })
+    );
+  }
+  deleteBook(book:Book):Observable<Book>{
+    return this.http.delete<Book>(`${this.url}/delete-book/${Number(book.isbn)}`,{}).pipe(
+      tap(()=>console.log("Book deleted")),
+      catchError((error)=>{
+        console.log("error occured",error);
+        return throwError(()=>error);
+      })
+    );
+  }
+  clearEdit():void{
+    this.BookToEdit=null;
+    this.bookIndex=null;
+  }
+  getIndex():number | null{
+    return this.bookIndex;
+  }
 }

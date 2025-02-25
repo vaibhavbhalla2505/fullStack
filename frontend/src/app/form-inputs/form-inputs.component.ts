@@ -18,10 +18,16 @@ export class FormInputsComponent implements OnInit {
   };
 
   standardGenre: string[] = ['fiction', 'non-fiction', 'biography', 'history', 'politics', 'science', 'novel'];
-  index:number | null=null;
+  index:number | null = null;
   constructor(private bookService: BookfetchService, private router: Router) {}
 
   ngOnInit(): void {
+    const bookToEdit = this.bookService.getEditBook();
+    this.index = this.bookService.getIndex();
+    if (bookToEdit) {
+      this.book = bookToEdit;
+      this.bookService.clearEdit();
+    }
   }
 
   onSubmit(): boolean {
@@ -65,7 +71,20 @@ export class FormInputsComponent implements OnInit {
       return false;
     }
 
-    
+    if(this.index!==null){
+      this.bookService.updateBook(this.book).subscribe({
+        next: () => {
+          alert('Book updated successfully');
+          this.router.navigate(['/book-details']);
+        },
+        error: (error) => {
+          console.error('Error updating book:', error);
+          alert('An error occurred while updating the book');
+          return;
+        },
+      })
+    }
+    else{
       this.bookService.addBook(this.book).subscribe({
         next: () => {
           alert('Book added successfully');
@@ -77,6 +96,7 @@ export class FormInputsComponent implements OnInit {
           return;
         },
       });
+    }
     
     this.resetForm();
     return true;
@@ -84,6 +104,5 @@ export class FormInputsComponent implements OnInit {
 
   resetForm(): void {
     this.book = { title: '', author: '', isbn: '', genre: '', publication_date: '',price:0 };
-    this.index=null;
   }
 }
