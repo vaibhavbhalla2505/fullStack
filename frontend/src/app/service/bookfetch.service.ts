@@ -7,7 +7,6 @@ import { Book } from '../app.component';
   providedIn: 'root'
 })
 export class BookfetchService {
-  private apiBooks:Book[] | null=null;
   private BookToEdit:Book | null = null;
   private bookIndex:number | null = null;
 

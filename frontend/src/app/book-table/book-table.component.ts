@@ -3,15 +3,14 @@ import { DomSanitizer,SafeHtml } from '@angular/platform-browser';
 import { BookfetchService } from '../service/bookfetch.service';
 import { Router } from '@angular/router';
 import { Book } from '../app.component';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom,Observable } from 'rxjs';
 
 @Component({
   selector: 'app-book-table',
   templateUrl: './book-table.component.html'
 })
-export class BookTableComponent implements OnInit {
-  books: Book[] = [];
-  allBooks: Book[] = [];
+export class BookTableComponent{
+  books$: Observable<Book[]>;
   searchValue: string = '';
   selectedGenre: String = '';
   sortSelect: String = '';
@@ -19,22 +18,8 @@ export class BookTableComponent implements OnInit {
     "fiction", "non-fiction", "biography", "history", "politics", "science", "novel"
   ];
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private bookService: BookfetchService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.bookService.getBooks().subscribe(
-      (fetchBooks) => {
-        this.allBooks = [...fetchBooks];
-        this.books = fetchBooks;
-      },
-      (error) => {
-        console.error('Error fetching books:', error);
-      }
-    );
+  constructor(private sanitizer: DomSanitizer,private bookService: BookfetchService) {
+    this.books$ = this.bookService.getBooks();
   }
 
   calculateAge = (date: string): string => {
@@ -66,10 +51,10 @@ export class BookTableComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(html); 
   }
 
-  editBook(book: Book, i: number): void {
+  editBook(book: Book): void {
   }
 
-  deleteBook(i: number): void {
+  deleteBook(): void {
   }
 
   searchAndFilterBooks(): void {
@@ -79,12 +64,5 @@ export class BookTableComponent implements OnInit {
   }
 
   sortByTitle(): void {
-    if (this.sortSelect === 'asc') {
-      const filterData = this.books.sort((a, b) => a.title.localeCompare(b.title));
-      this.books = filterData;
-    } else {
-      const filterData = this.books.sort((a, b) => b.title.localeCompare(a.title));
-      this.books = filterData;
-    }
   }
 }
