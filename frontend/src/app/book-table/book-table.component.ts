@@ -5,6 +5,10 @@ import { Book } from '../app.component';
 import { Observable,map} from 'rxjs';
 import { Router } from '@angular/router';
 
+interface Genre {
+  category_id: number;
+  genre: string;
+}
 @Component({
   selector: 'app-book-table',
   templateUrl: './book-table.component.html'
@@ -14,14 +18,24 @@ export class BookTableComponent{
   searchValue: string = '';
   selectedGenre: String = '';
   sortSelect: String = '';
-  standardGenre: string[] = [
-    "fiction", "non-fiction", "biography", "history", "politics", "science", "novel"
-  ];
+  genresList: Genre[] = [];
 
   constructor(private sanitizer: DomSanitizer,private bookService: BookfetchService,private router: Router) {
     this.books$ = this.bookService.getBooks();
+    this.getGenres();
   }
 
+  getGenres(): void {
+    this.bookService.getGenres().subscribe({
+      next: (response) => {
+        console.log('API Response:', response); 
+        this.genresList = response.data;
+      },
+      error: (error) => {
+        console.error('Error fetching genres:', error);
+      }
+    });
+  }
   calculateAge = (date: string): string => {
     let pubYear = date.substring(0, 4);
     let pubMonth = date.substring(5, 7);

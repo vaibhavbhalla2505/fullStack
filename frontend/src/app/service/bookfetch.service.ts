@@ -3,6 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable,map,of, tap,catchError,throwError } from 'rxjs';
 import { Book } from '../app.component';
 
+interface Genre {
+  category_id: number;
+  genre: string;
+}
+interface Author{
+  author_id: number;
+  author_name: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -69,5 +77,11 @@ export class BookfetchService {
   }
   getIndex():number | null{
     return this.bookIndex;
+  }
+  getGenres(): Observable<{ success: boolean; data: Genre[] }> {
+    return this.http.get<{ success: boolean; data: Genre[] }>(`${this.url}/category/getAllCategory`);
+  }
+  getAuthors(): Observable<{ success: boolean; data: Author[] }> {
+    return this.http.get<{ success: boolean; data: Author[] }>(`${this.url}/author/getAllAuthor`);
   }
 }

@@ -3,7 +3,6 @@ import { Book } from "../model/bookModel.js";
 import { Author } from "../model/authorModel.js";
 import { Category } from "../model/categoryModel.js";
 import sequelize from "sequelize";
-import { where } from "../../node_modules/sequelize/types/sequelize.js";
 
 export const combineBook:RequestHandler=async(req,res)=>{
     try {
@@ -82,7 +81,6 @@ export const createBook:RequestHandler=async(req,res)=>{
 }
 
 export const updateBook:RequestHandler=async(req,res)=>{
-  console.log("HI from update");
   try {
     const {title,publication_date,price,author,genre,isbn}=req.body;
     const ISBN=req.params.id;
@@ -142,6 +140,7 @@ export const updateBook:RequestHandler=async(req,res)=>{
     })
   }
 }
+
 export const deleteBook:RequestHandler=async(req,res)=>{
   try {
     const ISBN=req.params.id;

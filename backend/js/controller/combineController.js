@@ -85,7 +85,6 @@ export const createBook = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 export const updateBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("HI from update");
     try {
         const { title, publication_date, price, author, genre, isbn } = req.body;
         const ISBN = req.params.id;

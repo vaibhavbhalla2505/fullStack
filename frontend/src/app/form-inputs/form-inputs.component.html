@@ -11,8 +11,10 @@
  
             <div class="input"> 
                 <label for="author" class="text-lg font-medium">Author Name</label>
-                <input [(ngModel)]="book.author" name="author" type="text" id="author" placeholder="Enter Author Name" 
-                       class="w-full p-2 border border-gray-300 rounded-md"/>
+                <select name="author" [(ngModel)]="book.author" id="author" class="w-full p-2 border border-gray-300 rounded-md">
+                    <option value="" disabled selected>Select Author</option>
+                    <option *ngFor="let author of authorsList" [value]="author.author_name">{{ author.author_name }}</option>
+                </select>
             </div>
  
             <div class="input">
@@ -32,12 +34,12 @@
  
             <div class="input">
                 <label for="genre" class="text-lg font-medium">Book Genre</label>
-                <select name="genre" [(ngModel)]="book.genre" name="genre" id="genre" 
+                <select name="genre" [(ngModel)]="book.genre" id="genre" 
                         class="w-full p-2 border border-gray-300 rounded-md">
                     <option value="" disabled selected>Select Genre</option>
-                    <option *ngFor="let genre of standardGenre" [value]="genre">{{ genre }}</option>
+                    <option *ngFor="let genre of genresList" [value]="genre.genre">{{ genre.genre }}</option>
                 </select>
-            </div>
+            </div>            
  
             <button type="submit" id="addBook" class="w-full bg-indigo-500 text-white rounded-md py-2 px-4 hover:bg-indigo-900 font-medium">{{ this.index !== null ? 'Update Book' : 'Add Book' }}</button>
         </div>

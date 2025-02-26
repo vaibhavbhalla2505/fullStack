@@ -3,10 +3,19 @@ import { Router } from '@angular/router';
 import { Book } from '../app.component';
 import { BookfetchService } from '../service/bookfetch.service';
 
+interface Genre {
+  category_id: number;
+  genre: string;
+}
+interface Author{
+  author_id: number;
+  author_name: string;
+}
 @Component({
   selector: 'app-form-inputs',
   templateUrl: './form-inputs.component.html'
 })
+
 export class FormInputsComponent implements OnInit {
   book: Book = {
     title: '',
@@ -17,11 +26,15 @@ export class FormInputsComponent implements OnInit {
     price: 0,
   };
 
-  standardGenre: string[] = ['fiction', 'non-fiction', 'biography', 'history', 'politics', 'science', 'novel'];
+  genresList: Genre[] = [];
+  authorsList: Author[] = [];
   index:number | null = null;
+
   constructor(private bookService: BookfetchService, private router: Router) {}
 
   ngOnInit(): void {
+    this.getGenres();
+    this.getAuthors();
     const bookToEdit = this.bookService.getEditBook();
     this.index = this.bookService.getIndex();
     if (bookToEdit) {
@@ -29,9 +42,32 @@ export class FormInputsComponent implements OnInit {
       this.bookService.clearEdit();
     }
   }
+  getGenres(): void {
+    this.bookService.getGenres().subscribe({
+      next: (response) => {
+        console.log('API Response:', response); 
+        this.genresList = response.data;
+      },
+      error: (error) => {
+        console.error('Error fetching genres:', error);
+      }
+    });
+  }
+  getAuthors(): void {
+    this.bookService.getAuthors().subscribe({
+      next: (response) => {
+        console.log('API Response:', response); 
+        this.authorsList = response.data;
+      },
+      error: (error) => {
+        console.error('Error fetching authors:', error);
+      }
+    });
+  }
+  
+
 
   onSubmit(): boolean {
-
     if (!this.book.title) {
       alert('Please fill the title of the book');
       return false;

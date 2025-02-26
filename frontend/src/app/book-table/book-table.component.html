@@ -25,7 +25,7 @@
                     <th class="px-4 text-lg py-2">
                         <select [(ngModel)]="selectedGenre" (change)="searchAndFilterBooks()" name="genre" id="genreFilter" class="w-full text-sm text-black border border-gray-300 rounded-md">
                             <option value="" disabled selected>Select Genre</option>
-                            <option *ngFor="let genre of standardGenre" [value]="genre">{{genre}}</option>
+                            <option *ngFor="let genre of genresList" [value]="genre.genre">{{ genre.genre }}</option>
                         </select>
                     </th>
                     <th class="px-4 text-lg py-2">Actions</th>
