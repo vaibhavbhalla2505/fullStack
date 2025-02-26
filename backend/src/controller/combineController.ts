@@ -43,22 +43,7 @@ export const createBook:RequestHandler=async(req,res)=>{
       return;
     }
     let name=await Author.findOne({where:{author_name:author}})
-    if(!name){
-      res.status(500).send({
-        success: false,
-        message: "Author not found.",
-      })
-      return;
-    }
-
     let cat=await Category.findOne({where:{genre:genre}})
-    if(!cat){
-      res.status(500).send({
-        success: false,
-        message: "Category not found.",
-      })
-      return;
-    }
 
     const book=await Book.create({
       title,
@@ -84,7 +69,6 @@ export const updateBook:RequestHandler=async(req,res)=>{
   try {
     const {title,publication_date,price,author,genre,isbn}=req.body;
     const ISBN=req.params.id;
-    const book=await Book.findOne({where:{isbn:ISBN}});
 
     if (!title ||!publication_date ||!price ||!author ||!genre ||!isbn) {
       res.status(400).send({
@@ -94,32 +78,9 @@ export const updateBook:RequestHandler=async(req,res)=>{
       return;
     }
 
-    if(!ISBN){
-      res.status(400).send({
-        success: false,
-        message: "id is required.",
-      });
-      return;
-    }
-
-    if(!book){
-      res.status(404).send({
-        success: false,
-        message: "Book not found.",
-      });
-      return;
-    }
-
     const authors=await Author.findOne({where:{author_name:author}});
-    if(!authors){
-      res.status(404).send({
-        success: false,
-        message: "Author not found.",
-      });
-      return;
-    }
-    
     const authorId=(authors as {author_id:number}).author_id;
+
     const category=await Category.findOne({where:{genre:genre}})
     const categoryId=(category as {category_id:number}).category_id;
 
@@ -144,21 +105,6 @@ export const updateBook:RequestHandler=async(req,res)=>{
 export const deleteBook:RequestHandler=async(req,res)=>{
   try {
     const ISBN=req.params.id;
-    if(!ISBN){
-      res.status(400).send({
-        success: false,
-        message: "id is required.",
-      });
-      return;
-    }
-    const book=await Book.findOne({where:{isbn:ISBN}});
-    if(!book){
-      res.status(404).send({
-        success: false,
-        message: "Book not found.",
-      });
-      return;
-    }
     await Book.destroy({where:{isbn:ISBN}});
     res.status(200).send({
       message:"Book deleted successfully"
