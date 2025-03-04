@@ -1,0 +1,14 @@
+<div class="h-screen w-full flex flex-col">
+    <app-auth-navbar></app-auth-navbar>
+    <div class="flex-1 flex items-center justify-center bg-cover bg-center" 
+         style="background-image: url('https://www.nli.ie/sites/default/files/styles/event_large_large/public/2022-10/nli-oct-screen-res-56.jpg?h=78aab1d8&itok=8MZedc6a');">
+        <div class="bg-white bg-opacity-40 backdrop-blur-md p-8 rounded-2xl shadow-2xl text-center border border-white border-opacity-30">
+            <p class="text-white text-opacity-80 mb-6 text-3xl font-bold">Sign in to access your account</p>
+
+            <button (click)="login()" class="flex items-center font-bold text-2xl justify-center gap-3 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo" class="w-6 h-6">
+                Login with Microsoft
+            </button>
+        </div>
+    </div>
+</div>

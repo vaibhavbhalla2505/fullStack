@@ -5,9 +5,11 @@ import authorRoute from './routes/authorRoute.js'
 import categoryRoute from './routes/categoryRoute.js'
 import bookRoute from './routes/bookRoute.js';
 import bmsRoute from './routes/bmsRoute.js';
+import userRoute from './routes/userRoute.js'
 import "./model/authorModel.js"
 import "./model/bookModel.js"
 import "./model/categoryModel.js"
+import "./model/userModel.js"
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +22,7 @@ app.use('/api/v1',bmsRoute);
 app.use('/api/v1/author/',authorRoute);
 app.use('/api/v1/category/',categoryRoute);
 app.use('/api/v1/book/',bookRoute);
+app.use('/api/v1/user',userRoute);
 
 sequelize.sync({alter:true});
 

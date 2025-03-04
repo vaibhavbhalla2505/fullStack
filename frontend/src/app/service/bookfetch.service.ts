@@ -46,13 +46,16 @@ export class BookfetchService {
       })
     );
   }
+
   setEditBook(book:Book,i:number):void{
     this.BookToEdit=book;
     this.bookIndex=i;
   }
+
   getEditBook():Book | null{
     return this.BookToEdit;
   }
+
   updateBook(book:Book):Observable<Book>{
     return this.http.put<Book>(`${this.url}/update-book/${book.isbn}`,book).pipe(
       tap((response)=>console.log("Book updated",response)),
@@ -62,6 +65,7 @@ export class BookfetchService {
       })
     );
   }
+
   deleteBook(book:Book):Observable<Book>{
     return this.http.delete<Book>(`${this.url}/delete-book/${Number(book.isbn)}`,{}).pipe(
       tap(()=>console.log("Book deleted")),
@@ -71,17 +75,26 @@ export class BookfetchService {
       })
     );
   }
+
   clearEdit():void{
     this.BookToEdit=null;
     this.bookIndex=null;
   }
+
   getIndex():number | null{
     return this.bookIndex;
   }
+  
   getGenres(): Observable<{ success: boolean; data: Genre[] }> {
     return this.http.get<{ success: boolean; data: Genre[] }>(`${this.url}/category/getAllCategory`);
   }
   getAuthors(): Observable<{ success: boolean; data: Author[] }> {
     return this.http.get<{ success: boolean; data: Author[] }>(`${this.url}/author/getAllAuthor`);
+  }
+  sendData(userData: { email: string }): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.url}/user/create-user`, userData);
+  }
+  checkData(userData: { email: string}): Observable<{ message: string}>{
+    return this.http.post<{ message: string }>(`${this.url}/user/check-user`, userData);
   }
 }

@@ -1,11 +1,11 @@
 <div >
     <nav class="bg-blue-700 p-4 shadow-lg">
       <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <a routerLink="/" class="text-white text-3xl font-bold hover:text-red-500">Book Management System</a>
         <div class="space-x-4">
           <a routerLink="/add-book" class="text-white hover:text-red-500 text-xl font-bold">Add Book</a>
           <a routerLink="/book-details" class="text-white hover:text-red-500 text-xl font-bold">Book Details</a>
         </div>
+        <button (click)="logout()" class="text-white hover:text-red-500 text-2xl font-bold">Logout</button>
       </div>
      </nav>
 </div>
