@@ -43,12 +43,15 @@ export class AppComponent implements OnInit {
             this.bookService.checkData(data).subscribe({
               next:(response)=>{
                 alert(response.message);
-                this.router.navigate(['/book-details']);
+                if(response.success==true){
+                  this.router.navigate(['/book-details']);
+                }
+                else{
+                  this.router.navigate(['/signup']); 
+                }
               },
               error: (error) => {
                 console.error('Error fetching books:', error);
-                alert('User already exists');
-                this.router.navigate(['/signup']);
               }
             })
           }
